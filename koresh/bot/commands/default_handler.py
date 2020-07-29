@@ -135,7 +135,7 @@ def default_message_handler(update: Update, context: CallbackContext):
     if sender.first_name in ['Mark', 'Марк']:
         # TODO: store this info in DB
         last_hi_o = context.bot_data.get('last_hi_mark', None)
-        if not last_hi_o or datetime.now(timezone.utc) - last_hi_o > timedelta(days=1):
+        if not last_hi_o or datetime.now(timezone.utc) - last_hi_o > timedelta(seconds=1):
             reply = message.reply_text('ooh hi Mark)')
             context.bot_data['last_hi_mark'] = reply.date
 
