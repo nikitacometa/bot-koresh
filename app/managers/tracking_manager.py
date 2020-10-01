@@ -27,10 +27,10 @@ class TrackingManager:
         return {t.address: t for t in self.get_all()}
 
     def get_all(self) -> List[Tracking]:
-        return list(Tracking.from_dict(d) for d in self.db.find({}))
+        return list(Tracking.from_dict(d) for d in self.db.find({}) if d is not None)
 
     def get_by_chat_id(self, chat_id: int) -> List[Tracking]:
-        return list(Tracking.from_dict(d) for d in self.db.find({'chat_id': chat_id}))
+        return list(Tracking.from_dict(d) for d in self.db.find({'chat_id': chat_id}) if d is not None)
 
     def create(self, address: str, chat_id: int, status: AddressStatus, transactions: List[TransactionInfo]):
         now = datetime.now()
@@ -60,6 +60,7 @@ class TrackingManager:
                 return updated
             updated.status = status
 
+        # TODO: fix bug with null in transactions array
         if tx_info:
             found = False
             for tx in updated.transactions:

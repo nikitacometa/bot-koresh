@@ -12,7 +12,7 @@ from app.bot.commands.show_map import extract_coordinates
 from app.bot.commands.track_address import track_address
 from app.bot.commands.troll_mode import is_troll
 from app.utils.classes.decorators import moshnar_command
-from app.bot.commands.delete_after import delete_after_f
+from app.bot.commands.delete_after import delete_after_f, get_delete_after
 from app.bot.commands.save_photo import save_photo
 from app.bot.commands.split_teams import split_into_teams
 from app.bot.context import app_context
@@ -85,11 +85,6 @@ def is_split_request(tokens: List[str]) -> bool:
 
 def is_question(tokens: List[str]) -> bool:
     return '?' in tokens[-1]
-
-
-def get_delete_after(tokens: List[str]) -> Optional[str]:
-    option = list(filter(lambda token: token.startswith('$') and token[-1] in 'smhd', tokens))
-    return option[0] if len(option) > 0 else None
 
 
 def is_sladko(msg: Message) -> bool:

@@ -6,14 +6,15 @@ from telegram import ChatAction, Update, InlineKeyboardButton, InlineKeyboardMar
 from telegram.ext import CallbackContext, Dispatcher, CallbackQueryHandler
 
 from app.bot.commands.button_handler import button_handler
+from app.bot.commands.delete_after import get_delete_after
 from app.model.emojis import Emojis
 from app.utils.classes.decorators import send_action, moshnar_command
 from app.bot.context import app_context
 from app.model.challenge import Challenge
 from app.utils.callback_context_utils import get_chat_data
+from app.utils.str_utils import parse_time_to_seconds
 
-
-DEFAULT_DURATION = timedelta(minutes=10)
+DEFAULT_DURATION = timedelta(minutes=60)
 CHALLENGE_UPDATING_INTERVAL_SEC = 10
 CHALLENGE_UPDATING_INTERVAL = timedelta(seconds=CHALLENGE_UPDATING_INTERVAL_SEC)
 
@@ -65,10 +66,10 @@ def get_challenge_reply_markup(challenge_id: int) -> InlineKeyboardMarkup:
     ])
 
 
-def parse_challenge_text(text: str, duration: timedelta) -> Optional[str]:
+def parse_challenge_text(text: str, durationStr: Optional[str]) -> Optional[str]:
         text = text.replace('/challenge', '').strip()
-        if duration != DEFAULT_DURATION:
-            text = text.replace(str(duration.seconds), '').strip()
+        if durationStr is not None:
+            text = text.replace(durationStr, '').strip()
         return text if not text == '' else None
 
 
@@ -79,15 +80,19 @@ def create_challenge(update: Update, context: CallbackContext):
     try:
         # TODO: refactor
         duration = DEFAULT_DURATION
+        durationStr = None
         if not context.args == []:
             try:
-                duration = timedelta(seconds=int(context.args[0]))
+                durationStr = get_delete_after(context.args)
+                if durationStr is not None:
+                    seconds = parse_time_to_seconds(durationStr)
+                    duration = timedelta(seconds=seconds)
             except Exception:
                 pass
 
         challenge_text = f'Время по-нажимать{Emojis.SUNGLASSES}'
         if len(context.args) > 1:
-            parsed_text = parse_challenge_text(update.message.text, duration)
+            parsed_text = parse_challenge_text(update.message.text, durationStr)
             if parsed_text is not None:
                 challenge_text = parsed_text
 

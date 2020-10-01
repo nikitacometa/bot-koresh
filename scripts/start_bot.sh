@@ -30,6 +30,6 @@ echo
 
 while true
 do
-   "$PYTHON_HOME"/python3.8 "$KORESH_HOME/main.py" | tee -a "$FULL_LOG"
+   python3 "$KORESH_HOME/main.py" | tee -a "$FULL_LOG"
    sleep 1
 done
