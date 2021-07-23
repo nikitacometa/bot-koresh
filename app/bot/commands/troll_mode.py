@@ -7,7 +7,9 @@ from app.utils.classes.decorators import send_action, moshnar_command
 
 
 def is_troll(context: CallbackContext) -> bool:
-    return context.chat_data.get('troll_mode', False)
+    if context.chat_data.get('troll_mode') is None:
+        context.chat_data['troll_mode'] = True
+    return context.chat_data['troll_mode']
 
 
 @send_action(ChatAction.TYPING)

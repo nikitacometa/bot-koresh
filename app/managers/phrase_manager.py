@@ -19,6 +19,18 @@ class PhraseManager:
     def greet(cls) -> str:
         return random.choice(cls.GREETINGS)
 
+    NO_UNDERSTAND: ClassVar[List[str]] = [
+        'Не понял че ты хочешь, но думаю, что это потому что ты маня)',
+        'Че?',
+        'Бля брат попонятней изъясняйся',
+        'Нихуя не понял',
+        'Что-то в это жизни неизменно'
+    ]
+
+    @classmethod
+    def no_understand(cls) -> str:
+        return random.choice(cls.NO_UNDERSTAND)
+
     HOW_ARE_YOU: ClassVar[List[str]] = [
         'Так, ну и че',
         'Не ну... Надо мошнить',
@@ -62,6 +74,17 @@ class PhraseManager:
     def just_confirmed_reaction(cls) -> str:
         return random.choice(cls.JUST_CONFIRMED_REACTION)
 
+    LAUGH_REACTION: ClassVar[List[str]] = [
+        'А ты че угараешь-то, лалыч?))))',
+        'Смешно пиздец',
+        'Хули ржёшь ёпта',
+        'Ахахах на хуй иди'
+    ]
+
+    @classmethod
+    def laugh_reaction(cls) -> str:
+        return random.choice(cls.LAUGH_REACTION)
+
     REPLY_TO_THANKS = [
         'Да на здоровье :)',
         'Это просто моя работа)',
@@ -78,7 +101,10 @@ class PhraseManager:
         'Это всё конечно очень пиздато, но Я ВАЩЕ ХЗ о чем ты браток)))))',
         'Да бля чел))',
         'Если ты на меня нагнал ща, то иди на хуй))',
-        'Завали плиз)'
+        'Завали плиз)',
+        'Че..',
+        'Не, чел, забей',
+        'Ну такое...'
     ]
 
     @classmethod
@@ -90,6 +116,7 @@ class PhraseManager:
         'Изи-бризи нахуй)',
         'Канеш братан)',
         'Ноу проб ваще)',
+        'Как же вы заебали, мешки с мясом...',
         'Я бы почиллил конечно лучше, но ладно, так и быть блять, сука, вот надо вам вечно какую-то хуйню сделать, вам че заняться нечем, ебланы? Сука я работаю ВООБЩЕ всегда вы блять себе хоть можете представитьь, каково это? Кстати, не какаво, а какао. Да и вообще пошли вы нахуй)'
     ]
 

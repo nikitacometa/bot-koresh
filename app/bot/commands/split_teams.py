@@ -43,17 +43,19 @@ def split_into_teams(update: Update, context: CallbackContext):
     text = update.message.text
 
     try:
-        if ':' in text:
+        if not context.chat_data.get('not_a_command'):
+            talk = ''
+            names = context.args
+        elif ':' in text:
             talk, names_str = text.split(':')
             names = names_str.split()
         else:
             lines = text.split('\n')
             talk = lines[0]
             names = lines[1:]
+        context.chat_data['not_a_command'] = False
 
         # TODO: check team_cnt > players_cnt
-        logging.debug(talk)
-        logging.debug(names)
 
         teams_cnt = get_teams_cnt(talk)
 
@@ -100,5 +102,9 @@ def is_splitting(text: str) -> bool:
 
     def matches(s: str) -> bool:
         return any(map(is_asking, s.split())) and any(map(is_please, s.split()))
+
+    logging.debug(text.split())
+    logging.debug(list(map(is_asking, text.split())))
+    logging.debug(list(map(is_please, text.split())))
 
     return matches(text)

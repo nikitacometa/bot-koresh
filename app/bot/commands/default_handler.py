@@ -14,7 +14,7 @@ from app.bot.commands.troll_mode import is_troll
 from app.utils.classes.decorators import moshnar_command
 from app.bot.commands.delete_after import delete_after_f, get_delete_after
 from app.bot.commands.save_photo import save_photo
-from app.bot.commands.split_teams import split_into_teams
+from app.bot.commands.split_teams import split_into_teams, is_splitting
 from app.bot.context import app_context
 from app.bot.settings import BOT_CHAT_ID, HI_MARK_INTERVAL
 from app.bot.validator import is_valid_bitcoin_address
@@ -107,6 +107,11 @@ def default_message_handler(update: Update, context: CallbackContext):
     tokens = text.split() if text is not None else []
     low_tokens = text.lower().split() if text is not None else []
 
+    if is_splitting(text):
+        context.chat_data['not_a_command'] = True
+        split_into_teams(update, context)
+        return
+
     if sender.username == 'Luckmannn':
         # TODO: store this info in DB
         # TODO: set this feature via command
@@ -114,6 +119,10 @@ def default_message_handler(update: Update, context: CallbackContext):
         if now - app_context.last_hi_mark_at > HI_MARK_INTERVAL:
             message.reply_text('ooh hi Mark)')
             app_context.last_hi_mark_at = now
+
+    # if sender.username == 'notfreelogin' and is_troll(context):
+    #     message.reply_text('Иди нахуй)')
+    #     return
 
     try:
         coords = extract_coordinates(tokens)
@@ -139,10 +148,6 @@ def default_message_handler(update: Update, context: CallbackContext):
     last_msgs = context.chat_data['last_msgs']
     if len(last_msgs) >= 2 and is_sladko(last_msgs[-1]) and is_sladko(last_msgs[-2]):
         send_sladko(context.bot, message.chat.id)
-        return
-
-    if is_split_request(low_tokens):
-        split_into_teams(update, context)
         return
 
     delete_after_time = get_delete_after(low_tokens)
@@ -184,12 +189,24 @@ def default_message_handler(update: Update, context: CallbackContext):
             message.reply_text('На роток ты принял))')
             return
 
+        if have_starts(low_tokens, 'алиса'):
+            message.reply_text('Хуиса ёпт. Ты дебил?')
+            return
+
+        if have_starts(low_tokens, 'метнись'):
+            message.reply_text('А ты давай-ка на парашу метнись)')
+            return
+
         if str(low_tokens[-1]).endswith('на'):
             message.reply_text('Хуй на)))')
             return
 
+        if str(low_tokens[-1]) == 'мило':
+            message.reply_text('Ну а ты хуила)')
+            return
+
         if have_inside(low_tokens, 'ахах', 'aзаз', 'азах', 'ахаз', 'aхх', 'азх'):
-            message.reply_text('А ты че угараешь-то, лалыч?))))')
+            message.reply_text(PhraseManager.laugh_reaction())
             return
 
     if are_in_a_row(low_tokens, ['кореш', 'вывоз']):
@@ -250,9 +267,25 @@ def default_message_handler(update: Update, context: CallbackContext):
         message.reply_text(PhraseManager.reply_to_offense())
         return
 
+    if are_in_a_row(low_tokens, ['зачитай', 'реп']) or are_in_a_row(low_tokens, ['зачитай', 'рэп']):
+        message.reply_text('Я пиздатый бот, ебал вас всех в рот\nМой создатель бог, ты же просто лох\nЯ ебашу в кашу, ты сидишь на параше\nХочешь быть как я? Иди на хуй')
+        return
+
+    if are_in_a_row(low_tokens, ['прочитай', 'реп']) or are_in_a_row(low_tokens, ['прочитай', 'рэп']):
+        message.reply_text('Я пиздатый бот, ебал вас всех в рот\nМой создатель бог, ты же просто лох\nЯ ебашу в кашу, ты сидишь на параше\nХочешь быть как я? Иди на хуй')
+        return
+
+    if have_starts(low_tokens, 'создатель'):
+        message.reply_text('Мой создатель бог, ты же просто лох')
+        return
+
     # for diden only
     if are_in_a_row(low_tokens, ['мне', 'не', 'приятель']):
         message.reply_text('Ты мне не кореш, друг...')
+        return
+
+    if are_in_a_row(low_tokens, ['мне', 'не', 'кореш']):
+        message.reply_text('Ну и иди нахуй тогда че)')
         return
 
     if have_starts(low_tokens, 'нов') and have_starts(low_tokens, 'функц'):
@@ -373,7 +406,7 @@ def default_message_handler(update: Update, context: CallbackContext):
             message.reply_text('Да ты не грусти, всё равно ты не бот и скоро сдохнешь')
             return
 
-        message.reply_text('Не понял че ты хочешь, но думаю, что это потому что ты маня)')
+        message.reply_text(PhraseManager.no_understand())
         return
 
     message.reply_text(PhraseManager.default())
