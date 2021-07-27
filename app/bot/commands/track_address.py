@@ -9,7 +9,7 @@ from app.bot.context import app_context
 from app.bot.settings import ADMIN_CHAT_ID, TRACKING_TTL
 from app.utils.classes.moshnar_command import moshnar_command
 from app.utils.classes.sending_action import send_action
-from app.utils.message_utils import send_tracking_info_full, send_tx_info
+from app.utils.message_utils import send_tracking_info_full, send_tx_info, send_message_to_chat, send_message
 from app.utils.str_utils import get_addr_html_url, timedelta_to_str
 
 
@@ -61,7 +61,7 @@ def track_address_handler(update: Update, context: CallbackContext) -> None:
     try:
         args = context.args
         if not args:
-            update.message.reply_text(f'Анус себе потрекай братишка))')
+            send_message(context, update, f'Анус себе потрекай братишка))')
             return
 
         for address in args:
@@ -71,7 +71,7 @@ def track_address_handler(update: Update, context: CallbackContext) -> None:
             new_tracking = track_address(address, update.message, context.bot)
 
             if new_tracking:
-                app_context.bot.send_message(ADMIN_CHAT_ID,
+                send_message_to_chat(context, ADMIN_CHAT_ID,
                                              f'New tracking from user {update.message.from_user.username}: {address}')
 
     except Exception as e:

@@ -12,7 +12,7 @@ from app.bot.settings import PROXIES, BOT_API_TOKEN, STORAGE_DIR
 
 # TODO: store in user object
 from app.model.user import FileInfo
-from app.utils.message_utils import delete_msg_after
+from app.utils.message_utils import delete_msg_after, send_message_to_chat
 from app.utils.str_utils import parse_time
 
 
@@ -95,7 +95,7 @@ def save_photo(context: CallbackContext, file_id: str, user_id: Optional[int] = 
 
         if extra_info and extra_info.startswith('/next'):
             new_dir_num = get_next_dir_num(user_name)
-            message = app_context.bot.send_message(chat_id=chat_id, text=new_dir_num)
+            message = send_message_to_chat(context, chat_id, str(new_dir_num))
             delete_msg_after(message.chat.id, message.message_id, timedelta(seconds=60))
 
         local_file_path = get_local_file_path(context, user_name, extra_info)

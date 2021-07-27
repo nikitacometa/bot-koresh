@@ -13,6 +13,7 @@ from app.model.challenge import Challenge
 from app.utils.callback_context_utils import get_chat_data
 from app.utils.classes.moshnar_command import moshnar_command
 from app.utils.classes.sending_action import send_action
+from app.utils.message_utils import send_message
 from app.utils.str_utils import parse_time_to_seconds
 
 DEFAULT_DURATION = timedelta(minutes=60)
@@ -98,7 +99,7 @@ def create_challenge(update: Update, context: CallbackContext):
                 challenge_text = parsed_text
 
         challenge_id = context.chat_data.get('challenges_count', 0)
-        button_message = context.bot.send_message(update.message.chat.id, 'кто прочитал, тот пидор')
+        button_message = send_message(context, update, 'кто прочитал, тот пидор')
 
         new_challenge = Challenge(
             id=challenge_id,

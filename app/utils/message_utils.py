@@ -2,16 +2,26 @@ import logging
 from datetime import timedelta
 from typing import Optional
 
-from telegram import Bot, ParseMode, Message
+from telegram import Bot, ParseMode, Message, Update
 from telegram.ext import CallbackContext
 
 from app.model.stickers import Stickers
+from app.utils.modes import is_vanishing, vanish_after
 from app.utils.str_utils import tx_info_to_str, get_addr_html_url, datetime_to_str
 from app.model.tracking import Tracking
 
 
-def send_message(context, update, msg):
-    context.bot.send_message(update.message.chat.id, msg)
+def send_message(context: CallbackContext, update: Update, text: str) -> Message:
+    return send_message_to_chat(context, update.message.chat.id, text)
+
+# TODO: refactor these two /\ \/
+
+
+def send_message_to_chat(context: CallbackContext, chat_id: int, text: str) -> Message:
+    reply = context.bot.send_message(chat_id, text)
+    if is_vanishing(context):
+        delete_after(reply, vanish_after(context))
+    return reply
 
 
 def send_tx_info(t: Tracking, msg: Optional[str] = None):
@@ -56,6 +66,11 @@ def delete_msg_after(chat_id: int, msg_id: int, t: timedelta):
 
 def delete_after(msg: Message, t: timedelta):
     delete_msg_after(msg.chat_id, msg.message_id, t)
+
+
+def vanish(msg: Message, context: CallbackContext):
+    if is_vanishing(context):
+        delete_after(msg, vanish_after(context))
 
 
 def send_sesh(bot: Bot, chat_id):

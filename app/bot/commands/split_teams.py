@@ -78,7 +78,7 @@ def split_into_teams(update: Update, context: CallbackContext):
         teams = split_people(names, teams_cnt)
         team_num = 1
 
-        context.bot.send_message(update.message.chat.id, PhraseManager.no_problem())
+        send_message(context, update, PhraseManager.no_problem())
         for team in teams:
             if need_generate_captains:
                 captain = random.choice(team)
@@ -88,7 +88,7 @@ def split_into_teams(update: Update, context: CallbackContext):
                 msg = f'Команда #{team_num}\n' + '\n'.join(team) + '\n'
 
             team_num += 1
-            context.bot.send_message(update.message.chat.id, msg)
+            send_message(context, update, msg)
 
     except Exception as e:
         logging.exception(e)

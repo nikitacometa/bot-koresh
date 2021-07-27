@@ -7,95 +7,101 @@ import psutil
 
 @dataclass
 class PhraseManager:
-    GREETINGS: ClassVar[List[str]] = [
-        'Че по мошне))',
-        'Залетает)))))',
-        'Ха-тим)',
-        'Мас-тер Карди-ГАН )',
-        'Хыыыыы'
-    ]
 
     @classmethod
     def greet(cls) -> str:
-        return random.choice(cls.GREETINGS)
-
-    NO_UNDERSTAND: ClassVar[List[str]] = [
-        'Не понял че ты хочешь, но думаю, что это потому что ты маня)',
-        'Че?',
-        'Бля брат попонятней изъясняйся',
-        'Нихуя не понял'
-    ]
+        return random.choice([
+            'Че по мошне))',
+            'Залетает)))))',
+            'Ха-тим)',
+            'Мас-тер Карди-ГАН )',
+            'Хыыыыы'
+        ])
 
     @classmethod
     def no_understand(cls) -> str:
-        return random.choice(cls.NO_UNDERSTAND)
+        return random.choice([
+            'Не понял че ты хочешь, но думаю, что это потому что ты маня)',
+            'Че?',
+            'Бля брат попонятней изъясняйся',
+            'Нихуя не понял'
+        ])
 
-    HOW_ARE_YOU: ClassVar[List[str]] = [
-        'Так, ну и че',
-        'Не ну... Надо мошнить',
-        'Че-каво',
-        'Слышь'
-    ]
+    @classmethod
+    def chel_response(cls) -> str:
+        return random.choice([
+            'Ммм?))',
+            'Да-да?',
+            'Че)',
+            'бляяттб опять ты...',
+            'Чел ты...'
+        ])
+
+    @classmethod
+    def nice_call_response(cls) -> str:
+        return random.choice([
+            'Йо чел)',
+            'Дарова, че каво?)',
+            'че',
+            'Что такое, братишка?'
+        ])
 
     @classmethod
     def how_are_you(cls) -> str:
-        return random.choice(cls.HOW_ARE_YOU)
-
-    NOTHING_TO_DO: ClassVar[List[str]] = [
-        'Да хз, я чисто чиллю)',
-        'Мне пох, чисто пох, чилллю и кайфую ) )',
-        'Да хзщ))'
-    ]
+        return random.choice([
+            'Так, ну и че',
+            'Не ну... Надо мошнить',
+            'Че-каво',
+            'Слышь'
+        ])
 
     @classmethod
     def nothing_to_do(cls) -> str:
-        return random.choice(cls.NOTHING_TO_DO)
-
-    EXTRA_WORDS: ClassVar[List[str]] = [
-        'короче это, бля',
-        'в общем, типа',
-        'слушай, ну...',
-        'не ну, в принципе'
-    ]
+        return random.choice([
+            'Да хз, я чисто чиллю)',
+            'Мне пох, чисто пох, чилллю и кайфую ) )',
+            'Да хзщ))'
+        ])
 
     @classmethod
     def extra_words(cls) -> str:
-        return random.choice(cls.EXTRA_WORDS)
-
-    JUST_CONFIRMED_REACTION: ClassVar[List[str]] = [
-        'АХУЕНА)',
-        'ВОТ прям от души залетело))',
-        'О ДА, ЗАЛЕ-ТАЕТ (:',
-        'Чёт походу будет мошна пиздец...'
-    ]
+        return random.choice([
+            'короче это, бля',
+            'в общем, типа',
+            'слушай, ну...',
+            'не ну, в принципе'
+        ])
 
     @classmethod
     def just_confirmed_reaction(cls) -> str:
-        return random.choice(cls.JUST_CONFIRMED_REACTION)
+        return random.choice([
+            'АХУЕНА)',
+            'ВОТ прям от души залетело))',
+            'О ДА, ЗАЛЕ-ТАЕТ (:',
+            'Чёт походу будет мошна пиздец...'
+        ])
 
-    LAUGH_REACTION: ClassVar[List[str]] = [
+    @classmethod
+    def laugh_reaction(cls) -> str:
+        return random.choice([
         'А ты че угараешь-то, лалыч?))))',
         'Смешно пиздец',
         'Хули ржёшь ёпта',
         'Ахахах на хуй иди'
-    ]
+    ])
 
     @classmethod
-    def laugh_reaction(cls) -> str:
-        return random.choice(cls.LAUGH_REACTION)
-
-    REPLY_TO_THANKS = [
+    def reply_to_thanks(cls) -> str:
+        return random.choice([
         'Да на здоровье :)',
         'Это просто моя работа)',
         'Да не за что, я просто люблю ебашить)',
         'Ох, не стоит, я же просто бот...'
-    ]
+    ])
 
     @classmethod
-    def reply_to_thanks(cls) -> str:
-        return random.choice(cls.REPLY_TO_THANKS)
-
-    DEFAULT = [
+    def default(cls) -> str:
+        return random.choice([
         'Да хз)',
         'Это всё конечно очень пиздато, но Я ВАЩЕ ХЗ о чем ты браток)))))',
         'Да бля чел))',
@@ -104,42 +110,43 @@ class PhraseManager:
         'Че..',
         'Не, чел, забей',
         'Ну такое...'
-    ]
-
-    @classmethod
-    def default(cls) -> str:
-        return random.choice(cls.DEFAULT)
-
-    NO_PROBLEM = [
-        'Да на изичах)',
-        'Изи-бризи нахуй)',
-        'Канеш братан)',
-        'Ноу проб ваще)',
-        'Как же вы заебали, мешки с мясом...',
-        'Я бы почиллил конечно лучше, но ладно, так и быть блять, сука, вот надо вам вечно какую-то хуйню сделать, вам че заняться нечем, ебланы? Сука я работаю ВООБЩЕ всегда вы блять себе хоть можете представитьь, каково это? Кстати, не какаво, а какао. Да и вообще пошли вы нахуй)'
-    ]
+    ])
 
     @classmethod
     def no_problem(cls) -> str:
-        return random.choice(cls.NO_PROBLEM)
+        return random.choice([
+        'Да на изичах)',
+        'Изи-бризи нахуй)',
+        'Ноу проблемо братан)',
+        'Забились!',
+        'Лаадно, всё будет)',
+        'Как же вы заебали, мешки с мясом...',
+        'Я бы почиллил конечно лучше, но ладно, так и быть блять, сука, вот надо вам вечно какую-то хуйню сделать, вам че заняться нечем, ебланы? Сука я работаю ВООБЩЕ всегда вы блять себе хоть можете представитьь, каково это? Кстати, не какаво, а какао. Да и вообще пошли вы нахуй)'
+    ])
 
-    KARDIGUN_RHYMES = [
-        'Мистер порванный пукан))',
-        'Бодро принял на ротан))'
-    ]
+    @classmethod
+    def ok(cls) -> str:
+        return random.choice([
+        'Лады че',
+        'Окей',
+        'Alright',
+        'ОК',
+        'Понял'
+    ])
 
     @classmethod
     def kardigun_rhyme(cls) -> str:
-        return random.choice(cls.KARDIGUN_RHYMES)
-
-    LOVE_420 = [
-        'Я люблю дуть плюхи)))',
-        'Чел, ты только представь, какой толерок у бота ;)'
-    ]
+        return random.choice([
+        'Мистер порванный пукан))',
+        'Бодро принял на ротан))'
+    ])
 
     @classmethod
     def love_420(cls) -> str:
-        return random.choice(cls.LOVE_420)
+        return random.choice([
+        'Я люблю дуть плюхи)))',
+        'Чел, ты только представь, какой толерок у бота ;)'
+    ])
 
     NO_VIVOZ = [
         'Та хз, вывозом здесь даже и не пахнет)',
@@ -148,7 +155,10 @@ class PhraseManager:
 
     @classmethod
     def no_vivoz(cls) -> str:
-        return random.choice(cls.NO_VIVOZ)
+        return random.choice([
+        'Та хз, вывозом здесь даже и не пахнет)',
+        'Лол ты не с тем ботом решил обсудить эту хуйню браток))'
+    ])
 
     REPLY_TO_OFFENSE = [
         'Вообще довольно обидно. Ладно, чел, я тебя понял.',

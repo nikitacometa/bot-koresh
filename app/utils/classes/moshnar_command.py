@@ -7,7 +7,7 @@ from telegram.ext import CallbackContext
 
 from app.bot.context import app_context
 from app.bot.settings import SLADKO_EVERY_NTH_MESSAGE, COMMAND_RETRIES, SAVE_LAST_MESSAGES_CNT
-from app.utils.message_utils import send_sladko, delete_msg_after
+from app.utils.message_utils import send_sladko, delete_msg_after, delete_after
 from app.utils.callback_context_utils import increase_messages_count
 
 
@@ -36,7 +36,7 @@ def moshnar_command(command_handler):
 
         vanish_after = context.chat_data.get('vanish_mode')
         if vanish_after is not None:
-            delete_msg_after(message.chat.id, message.message_id, vanish_after)
+            delete_after(message, vanish_after)
 
         for i in range(COMMAND_RETRIES + 1):
             try:

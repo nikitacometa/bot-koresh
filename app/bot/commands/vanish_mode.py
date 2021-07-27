@@ -1,25 +1,18 @@
 from datetime import timedelta
-from typing import Optional
 
 from telegram import Update, ChatAction
 from telegram.ext import CallbackContext
 
+from app.managers.phrase_manager import PhraseManager
 from app.utils.classes.moshnar_command import moshnar_command
 from app.utils.classes.sending_action import send_action
-from app.utils.message_utils import delete_msg_after, delete_after
+from app.utils.message_utils import delete_after
+from app.utils.modes import is_vanishing, vanish_after
 from app.utils.str_utils import parse_time, timedelta_to_str
 
 DEFAULT_VANISH_DELAY = timedelta(hours=1)
-DELETE_DELAY = timedelta(seconds=10)
-
-
-def vanish_after(context: CallbackContext) -> Optional[timedelta]:
-    return context.chat_data.get('vanish_mode')
-
-
-def is_vanishing(context: CallbackContext) -> bool:
-    return vanish_after(context) is not None
-
+DELETE_DELAY = timedelta(seconds=6)
+TIME_TAGS_EXAMPLE = "$10s, $20m, $2h, $1d, $..."
 
 @send_action(ChatAction.TYPING)
 @moshnar_command
@@ -42,11 +35,11 @@ def vanish_mode(update: Update, context: CallbackContext):
             remove_after = parse_time(token)
 
     if remove_after is None:
-        update.message.reply_text(f'Надо бы время ещё передать, приятель ($20m, $1h, ...)')
+        update.message.reply_text(f'Надо бы время ещё передать, приятель ({TIME_TAGS_EXAMPLE})')
         return
 
     context.chat_data['vanish_mode'] = remove_after
-    rep = update.message.reply_text(f'Забились! Буду удалять сообщения через {timedelta_to_str(remove_after)}')
+    rep = update.message.reply_text(f'{PhraseManager.no_problem()}\nБуду удалять сообщения через {timedelta_to_str(remove_after)}')
 
     delete_after(update.message, DELETE_DELAY)
     delete_after(rep, DELETE_DELAY)
@@ -57,5 +50,5 @@ def vanish_mode_off(update: Update, context: CallbackContext):
         update.message.reply_text('Да я и так ничего не удалял')
         return
 
-    update.message.reply_text('Окей, не буду удалять')
+    update.message.reply_text(f'{PhraseManager.ok()}, не буду удалять')
     context.chat_data['vanish_mode'] = None

@@ -9,7 +9,7 @@ from app.bot.commands.abstract_command import Command
 from app.bot.commands.admin_mode import admin_mode
 from app.bot.commands.create_challenge import handle_challenge, challenge_update_dispatcher
 from app.bot.commands.translate import translate_handle
-from app.bot.commands.vanish_mode import vanish_mode
+from app.bot.commands.vanish_mode import vanish_mode, TIME_TAGS_EXAMPLE
 from app.bot.commands.show_tracked import show_tracked
 from app.bot.commands.split_teams import split_into_teams
 from app.bot.commands.start import start
@@ -43,8 +43,7 @@ class Commands:
         Command('track', track_address_handler, help=
                 f'/track - попалить, '
                 f'какая последняя транзакция на адресе(-ах), и если она есть и ещё не '
-                f'дошла, то пиздец пристально последить за ней и СРАЗУ ЖЕ отписать в чат, когда она дойдёт) Можно '
-                f'передать слово random, чтобы последить за рандомным адресом с транзакцией'),
+                f'дошла, то пиздец пристально последить за ней и СРАЗУ ЖЕ отписать в чат, когда она дойдёт)'),
 
         Command('split_teams', split_into_teams, help=
                 f'/split_teams - поделить множество людей на n команд (2 по дефолту)'),
@@ -64,10 +63,10 @@ class Commands:
         Command('translate', translate_handle),
 
         Command('challenge', handle_challenge, additional_dispatcher_update=challenge_update_dispatcher, help=
-                f'/challenge - скинуть в чат кнопку "кто быстрее", если вдруг надо что-то серьёзно порешать'),
+                f'/challenge $t - скинуть в чат кнопку "кто быстрее" на t ({TIME_TAGS_EXAMPLE}) времени, если вдруг надо что-то серьёзное быстро порешать'),
 
         Command('vanish_mode', vanish_mode,
-                help='/vanish_mode $t - удалять все сообщения в чате через t ($20m, $2h, $1d)'),
+                help=f'/vanish_mode $t - удалять все сообщения в чате через t ({TIME_TAGS_EXAMPLE})'),
 
         Command('help', show_help)
     ]

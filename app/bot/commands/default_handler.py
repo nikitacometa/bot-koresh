@@ -20,9 +20,10 @@ from app.bot.settings import BOT_CHAT_ID, HI_MARK_INTERVAL
 from app.bot.validator import is_valid_bitcoin_address
 from app.managers.phrase_manager import PhraseManager
 from app.utils.classes.moshnar_command import moshnar_command
-from app.utils.message_utils import send_sladko, delete_msg_after
+from app.utils.message_utils import send_sladko, delete_msg_after, send_message, delete_after, vanish
 
 # TODO: make parse_utils or Parser
+from app.utils.modes import vanish_after
 from app.utils.parse_utils import get_alpha_part
 from app.utils.str_utils import parse_time_to_seconds
 
@@ -131,14 +132,15 @@ def default_message_handler(update: Update, context: CallbackContext):
         # TODO: set this feature via command
         now = datetime.now()
         if now - app_context.last_hi_mark_at > HI_MARK_INTERVAL:
-            message.reply_text('ooh hi Mark)')
+            send_message(context, update, 'ooh hi Mark)')
             app_context.last_hi_mark_at = now
 
     try:
         coords = extract_coordinates(tokens)
         if coords:
             img_link = app_context.map_client.get_img_link_by_coordinates(coords)
-            update.message.reply_photo(photo=img_link)
+            reply = update.message.reply_photo(photo=img_link)
+            vanish(reply, context)
     except Exception as e:
         logging.exception(e)
 
@@ -161,11 +163,11 @@ def default_message_handler(update: Update, context: CallbackContext):
 
         timer = parse_time_to_seconds(delete_after_time)
         if timer is None:
-            update.message.reply_text('Чёт не вышло(')
+            send_message(context, update, 'Чёт не вышло(')
             return
 
         delete_msg_after(update.message.chat.id, message.message_id, timer)
-        reply_msg = message.reply_text('Организуем-организуем)')
+        reply_msg = send_message(context, update, 'Организуем-организуем)')
 
         bot_delay = min(7, timer)
         # delete my msg as well
@@ -174,6 +176,29 @@ def default_message_handler(update: Update, context: CallbackContext):
 
     if is_vanishing(context):
         return
+
+    if message.photo:
+        biggest = None
+        for photo in message.photo:
+            if biggest is None or photo.file_size > biggest.file_size:
+                biggest = photo
+
+        if save_photo(context, biggest.file_id, sender.id, sender.name, message.caption, message.chat.id):
+            context.bot.delete_message(message.chat.id, message.message_id)
+            logging.info(f"Message for photo '{biggest.file_id}' was deleted")
+            return
+        else:
+            send_message(context, update, f"Хз че по сохранить фотку '{biggest.file_id}'")
+
+    if message.location is not None:
+        location_str = f'{message.location.latitude}, {message.location.longitude}'
+        logging.debug(f'{sender.name} сейчас чиллит на ({location_str})')
+        send_message(context, update, location_str)
+        return
+
+    if text is None:
+        return
+    # after that just text handlers
 
     if is_troll(context):
         # checking only the last token for a rhyme
@@ -246,28 +271,17 @@ def default_message_handler(update: Update, context: CallbackContext):
     except Exception as e:
         logging.exception(e)
 
-    if message.photo:
-        biggest = None
-        for photo in message.photo:
-            if biggest is None or photo.file_size > biggest.file_size:
-                biggest = photo
-
-        if save_photo(context, biggest.file_id, sender.id, sender.name, message.caption, message.chat.id):
-            context.bot.delete_message(message.chat.id, message.message_id)
-            logging.info(f"Message for photo '{biggest.file_id}' was deleted")
-            return
-        else:
-            message.reply_text(f"Хз че по сохранить фотку '{biggest.file_id}'")
-
-    if message.location is not None:
-        location_str = f'{message.location.latitude}, {message.location.longitude}'
-        logging.debug(f'{sender.name} сейчас чиллит на ({location_str})')
-        message.reply_text(location_str)
-        return
-
     if not low_tokens:
         # message was only my name
         message.reply_text('Че)')
+        return
+
+    if len(low_tokens) == 1 and low_tokens[0].startswith('чел'):
+        message.reply_text(PhraseManager.chel_response())
+        return
+
+    if len(low_tokens) == 1 and have_starts(low_tokens, 'брат', 'друг', 'приятель', 'друж'):
+        send_message(context, update, PhraseManager.nice_call_response())
         return
 
     if is_thanks(low_tokens):
