@@ -5,8 +5,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from app.bot.context import app_context
-from app.utils.classes.decorators import moshnar_command
-
+from app.utils.classes.moshnar_command import moshnar_command
 
 COORD_MATCHER = re.compile(r'\d\d\.\d{5,7}\s*,?\s*\d\d\.\d{5,7}')
 

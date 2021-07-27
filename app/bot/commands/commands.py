@@ -9,7 +9,7 @@ from app.bot.commands.abstract_command import Command
 from app.bot.commands.admin_mode import admin_mode
 from app.bot.commands.create_challenge import handle_challenge, challenge_update_dispatcher
 from app.bot.commands.translate import translate_handle
-from app.utils.classes.decorators import send_action, moshnar_command
+from app.bot.commands.vanish_mode import vanish_mode
 from app.bot.commands.show_tracked import show_tracked
 from app.bot.commands.split_teams import split_into_teams
 from app.bot.commands.start import start
@@ -17,6 +17,8 @@ from app.bot.commands.track_address import track_address_handler
 from app.bot.commands.troll_mode import troll_mode
 
 from app.managers.phrase_manager import PhraseManager
+from app.utils.classes.moshnar_command import moshnar_command
+from app.utils.classes.sending_action import send_action
 
 
 @send_action(ChatAction.TYPING)
@@ -63,6 +65,9 @@ class Commands:
 
         Command('challenge', handle_challenge, additional_dispatcher_update=challenge_update_dispatcher, help=
                 f'/challenge - скинуть в чат кнопку "кто быстрее", если вдруг надо что-то серьёзно порешать'),
+
+        Command('vanish_mode', vanish_mode,
+                help='/vanish_mode $t - удалять все сообщения в чате через t ($20m, $2h, $1d)'),
 
         Command('help', show_help)
     ]

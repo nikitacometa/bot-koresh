@@ -7,23 +7,8 @@ from telegram.ext import CallbackContext
 
 from app.bot.context import app_context
 from app.bot.settings import SLADKO_EVERY_NTH_MESSAGE, COMMAND_RETRIES, SAVE_LAST_MESSAGES_CNT
-from app.utils.message_utils import send_sladko
+from app.utils.message_utils import send_sladko, delete_msg_after
 from app.utils.callback_context_utils import increase_messages_count
-
-
-# TODO: move to utility_classes dir
-def send_action(action):
-    """Sends `action` while processing func command."""
-
-    def decorator(func):
-        @wraps(func)
-        def command_func(update, context, *args, **kwargs):
-            context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=action)
-            return func(update, context, *args, **kwargs)
-
-        return command_func
-
-    return decorator
 
 
 def moshnar_command(command_handler):
@@ -44,10 +29,14 @@ def moshnar_command(command_handler):
         if 'last_msgs' not in context.chat_data:
             context.chat_data['last_msgs'] = []
 
-        last_msgs = context.chat_data['last_msgs']
+        last_msgs = context.chat_data.get('last_msgs')
         if len(last_msgs) >= SAVE_LAST_MESSAGES_CNT:
             last_msgs.pop(0)
         last_msgs.append(message)
+
+        vanish_after = context.chat_data.get('vanish_mode')
+        if vanish_after is not None:
+            delete_msg_after(message.chat.id, message.message_id, vanish_after)
 
         for i in range(COMMAND_RETRIES + 1):
             try:

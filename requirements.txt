@@ -36,3 +36,6 @@ virtualenv==20.0.23
 virtualenv-clone==0.5.4
 wcwidth==0.2.2
 yarl==1.4.2
+
+telegram~=0.0.1
+dacite~=1.6.0

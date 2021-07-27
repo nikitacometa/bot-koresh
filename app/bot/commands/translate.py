@@ -1,8 +1,9 @@
-from telegram import Update, ChatAction
+from telegram import Update, ChatAction, Message, User
 from telegram.ext import CallbackContext
 
 from app.bot.context import app_context
-from app.utils.classes.decorators import send_action, moshnar_command
+from app.utils.classes.moshnar_command import moshnar_command
+from app.utils.classes.sending_action import send_action
 
 
 @send_action(ChatAction.TYPING)

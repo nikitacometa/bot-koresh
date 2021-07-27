@@ -2,7 +2,7 @@
 
 sudo apt update && apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-xz-utils tk-dev libffi-dev liblzma-dev python-openssl git pipenv tor || exit
+xz-utils tk-dev libffi-dev liblzma-dev openssl git pipenv tor || exit
 
 git clone https://github.com/wackloner/bot-koresh.git ~/bot-koresh
 
@@ -15,6 +15,8 @@ pyenv global 3.8.5
 
 ~/.pyenv/versions/3.8.5/bin/pip3 install pipenv
 ~/.pyenv/versions/3.8.5/bin/pipenv install
+
+pipenv install --dev
 
 # Mongo
 wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -

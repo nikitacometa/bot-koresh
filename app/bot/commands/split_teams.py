@@ -5,8 +5,9 @@ from typing import List, Optional
 from telegram import ChatAction, Update
 from telegram.ext import CallbackContext
 
-from app.utils.classes.decorators import moshnar_command, send_action
 from app.managers.phrase_manager import PhraseManager
+from app.utils.classes.moshnar_command import moshnar_command
+from app.utils.classes.sending_action import send_action
 from app.utils.message_utils import send_message
 
 
@@ -103,8 +104,4 @@ def is_splitting(text: str) -> bool:
     def matches(s: str) -> bool:
         return any(map(is_asking, s.split())) and any(map(is_please, s.split()))
 
-    logging.debug(text.split())
-    logging.debug(list(map(is_asking, text.split())))
-    logging.debug(list(map(is_please, text.split())))
-
-    return matches(text)
+    return text is not None and matches(text)

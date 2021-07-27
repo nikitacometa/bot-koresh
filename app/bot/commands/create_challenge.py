@@ -8,10 +8,11 @@ from telegram.ext import CallbackContext, Dispatcher, CallbackQueryHandler
 from app.bot.commands.button_handler import button_handler
 from app.bot.commands.delete_after import get_delete_after
 from app.model.emojis import Emojis
-from app.utils.classes.decorators import send_action, moshnar_command
 from app.bot.context import app_context
 from app.model.challenge import Challenge
 from app.utils.callback_context_utils import get_chat_data
+from app.utils.classes.moshnar_command import moshnar_command
+from app.utils.classes.sending_action import send_action
 from app.utils.str_utils import parse_time_to_seconds
 
 DEFAULT_DURATION = timedelta(minutes=60)

@@ -1,7 +1,7 @@
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from time import sleep
-from typing import List, Optional
+from typing import List
 
 from telegram import Update, Message, User
 from telegram.ext import CallbackContext
@@ -11,16 +11,16 @@ from app.bot.commands.create_challenge import create_challenge
 from app.bot.commands.show_map import extract_coordinates
 from app.bot.commands.track_address import track_address
 from app.bot.commands.troll_mode import is_troll
-from app.utils.classes.decorators import moshnar_command
-from app.bot.commands.delete_after import delete_after_f, get_delete_after
+from app.bot.commands.delete_after import get_delete_after
 from app.bot.commands.save_photo import save_photo
 from app.bot.commands.split_teams import split_into_teams, is_splitting
+from app.bot.commands.vanish_mode import is_vanishing
 from app.bot.context import app_context
 from app.bot.settings import BOT_CHAT_ID, HI_MARK_INTERVAL
 from app.bot.validator import is_valid_bitcoin_address
 from app.managers.phrase_manager import PhraseManager
-from app.utils.message_utils import send_sladko
-
+from app.utils.classes.moshnar_command import moshnar_command
+from app.utils.message_utils import send_sladko, delete_msg_after
 
 # TODO: make parse_utils or Parser
 from app.utils.parse_utils import get_alpha_part
@@ -94,6 +94,17 @@ def is_sladko(msg: Message) -> bool:
     return msg.sticker.file_unique_id == 'AgADBgADhlyiAw'
 
 
+def handle_sladko(msg: Message, context: CallbackContext) -> bool:
+    context.chat_data['sladko_prev'] = context.chat_data.get('sladko_cur')
+    context.chat_data['sladko_cur'] = is_sladko(msg)
+
+    if context.chat_data.get('sladko_cur') and context.chat_data.get('sladko_prev'):
+        context.chat_data['sladko_cur'] = False
+        send_sladko(context.bot, msg.chat.id)
+
+    return is_sladko(msg)
+
+
 @moshnar_command
 def default_message_handler(update: Update, context: CallbackContext):
     logging.debug('default handler')
@@ -107,6 +118,9 @@ def default_message_handler(update: Update, context: CallbackContext):
     tokens = text.split() if text is not None else []
     low_tokens = text.lower().split() if text is not None else []
 
+    if handle_sladko(message, context):
+        return
+
     if is_splitting(text):
         context.chat_data['not_a_command'] = True
         split_into_teams(update, context)
@@ -119,10 +133,6 @@ def default_message_handler(update: Update, context: CallbackContext):
         if now - app_context.last_hi_mark_at > HI_MARK_INTERVAL:
             message.reply_text('ooh hi Mark)')
             app_context.last_hi_mark_at = now
-
-    # if sender.username == 'notfreelogin' and is_troll(context):
-    #     message.reply_text('Иди нахуй)')
-    #     return
 
     try:
         coords = extract_coordinates(tokens)
@@ -145,11 +155,6 @@ def default_message_handler(update: Update, context: CallbackContext):
         except Exception:
             pass
 
-    last_msgs = context.chat_data['last_msgs']
-    if len(last_msgs) >= 2 and is_sladko(last_msgs[-1]) and is_sladko(last_msgs[-2]):
-        send_sladko(context.bot, message.chat.id)
-        return
-
     delete_after_time = get_delete_after(low_tokens)
     if delete_after_time is not None:
         logging.debug(f'default_handler = {delete_after_time}')
@@ -159,12 +164,15 @@ def default_message_handler(update: Update, context: CallbackContext):
             update.message.reply_text('Чёт не вышло(')
             return
 
-        app_context.job_queue.run_once(callback=delete_after_f(update.message.chat.id, message.message_id), when=timer)
+        delete_msg_after(update.message.chat.id, message.message_id, timer)
         reply_msg = message.reply_text('Организуем-организуем)')
 
         bot_delay = min(7, timer)
         # delete my msg as well
-        app_context.job_queue.run_once(callback=delete_after_f(reply_msg.chat.id, reply_msg.message_id), when=bot_delay)
+        delete_msg_after(reply_msg.chat.id, reply_msg.message_id, bot_delay)
+        return
+
+    if is_vanishing(context):
         return
 
     if is_troll(context):
@@ -213,8 +221,12 @@ def default_message_handler(update: Update, context: CallbackContext):
         message.reply_text('Не ну я-то вывожу (:')
         return
 
-    if have_starts(low_tokens, 'мусора'):
-        message.reply_text('Мусора сосатб(((')
+    if have_starts(low_tokens, 'мусора') or have_starts(low_tokens, 'мент'):
+        message.reply_text('Мусора сосать))')
+        return
+
+    if are_in_a_row(low_tokens, ['иди', 'на']):
+        message.reply_text('Там уже занято тобой :(')
         return
 
     try:

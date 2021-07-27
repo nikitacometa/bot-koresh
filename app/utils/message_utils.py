@@ -1,7 +1,9 @@
 import logging
+from datetime import timedelta
 from typing import Optional
 
-from telegram import Bot, ParseMode
+from telegram import Bot, ParseMode, Message
+from telegram.ext import CallbackContext
 
 from app.model.stickers import Stickers
 from app.utils.str_utils import tx_info_to_str, get_addr_html_url, datetime_to_str
@@ -38,6 +40,22 @@ def comment_tracking(t: Tracking, msg: str):
 
 def send_sladko(bot: Bot, chat_id):
     bot.send_sticker(chat_id, Stickers.SLADKO)
+
+
+def delete_after_f(chat_id: int, message_id: int):
+    def delete_after(context: CallbackContext):
+        context.bot.delete_message(chat_id=chat_id, message_id=message_id)
+
+    return delete_after
+
+
+def delete_msg_after(chat_id: int, msg_id: int, t: timedelta):
+    from app.bot.context import app_context
+    app_context.job_queue.run_once(callback=delete_after_f(chat_id, msg_id), when=t)
+
+
+def delete_after(msg: Message, t: timedelta):
+    delete_msg_after(msg.chat_id, msg.message_id, t)
 
 
 def send_sesh(bot: Bot, chat_id):

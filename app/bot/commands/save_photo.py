@@ -1,19 +1,18 @@
 import logging
 import os
 from datetime import datetime, timedelta
-from shutil import copyfile
 from typing import Optional
 
 import requests
 from telegram.ext import CallbackContext
 
-from app.bot.commands.delete_after import delete_after_f
 from app.bot.context import app_context
 from app.bot.settings import PROXIES, BOT_API_TOKEN, STORAGE_DIR
 
 
 # TODO: store in user object
 from app.model.user import FileInfo
+from app.utils.message_utils import delete_msg_after
 from app.utils.str_utils import parse_time
 
 
@@ -97,7 +96,7 @@ def save_photo(context: CallbackContext, file_id: str, user_id: Optional[int] = 
         if extra_info and extra_info.startswith('/next'):
             new_dir_num = get_next_dir_num(user_name)
             message = app_context.bot.send_message(chat_id=chat_id, text=new_dir_num)
-            app_context.job_queue.run_once(callback=delete_after_f(message.chat.id, message.message_id), when=timedelta(seconds=60))
+            delete_msg_after(message.chat.id, message.message_id, timedelta(seconds=60))
 
         local_file_path = get_local_file_path(context, user_name, extra_info)
         ttl = get_ttl(extra_info)
