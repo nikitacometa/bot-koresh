@@ -276,6 +276,10 @@ def default_message_handler(update: Update, context: CallbackContext):
         message.reply_text('Че)')
         return
 
+    if low_tokens[0].startswith('поясн') or low_tokens[0].startswith('скаж'):
+        message.reply_text(PhraseManager.telling_response())
+        return
+
     if len(low_tokens) == 1 and low_tokens[0].startswith('чел'):
         message.reply_text(PhraseManager.chel_response())
         return

@@ -38,6 +38,15 @@ class PhraseManager:
         ])
 
     @classmethod
+    def telling_response(cls) -> str:
+        return random.choice([
+            'Да без проблем, брат) Смотри значит, ты - пидрила) The end',
+            'Да вы же даже не выкупите, если я всё поясню :\\',
+            'А давай ты что-нибудь интересное расскажешь?) по-братски чисто',
+            'Ооойй не, я на чилле, просто забей)'
+        ])
+
+    @classmethod
     def nice_call_response(cls) -> str:
         return random.choice([
             'Йо чел)',
