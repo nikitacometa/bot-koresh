@@ -99,7 +99,7 @@ def is_splitting(text: str) -> bool:
         return word in ('подели', 'раздели', 'намошни')
 
     def is_please(word: str) -> bool:
-        return word in ('плиз', 'плз', 'пож', 'плез', 'пожалуйста', 'по-братски')
+        return word in PhraseManager.PLEASE_WORDS
 
     def matches(s: str) -> bool:
         return any(map(is_asking, s.split())) and any(map(is_please, s.split()))

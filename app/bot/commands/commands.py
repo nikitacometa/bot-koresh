@@ -4,6 +4,7 @@ from typing import ClassVar, List
 from telegram import ChatAction, Update
 from telegram.ext import CallbackContext
 
+from app.bot.commands.aneks import joke
 from app.bot.commands.show_map import show_map
 from app.bot.commands.abstract_command import Command
 from app.bot.commands.admin_mode import admin_mode
@@ -45,18 +46,15 @@ class Commands:
                 f'какая последняя транзакция на адресе(-ах), и если она есть и ещё не '
                 f'дошла, то пиздец пристально последить за ней и СРАЗУ ЖЕ отписать в чат, когда она дойдёт)'),
 
+        Command('show_tracked', show_tracked, help=
+                f'/show_tracked - показать все отслеживаемые адреса\n'),
+
         Command('split_teams', split_into_teams, help=
                 f'/split_teams - поделить множество людей на n команд (2 по дефолту)'),
-
-        Command('show_tracked', show_tracked, help=
-                f'/show_tracked - показать все отслеживаемые адреса'),
 
         # TODO: don't write name in help (add it in Command init)
         Command('show_map', show_map, help=
                 f'/show_map - показать кусок карты по данной локации'),
-
-        Command('troll_mode', troll_mode, help=
-                f'/troll_mode on/off - тролльмод'),
 
         Command('admin_mode', admin_mode),
 
@@ -65,8 +63,13 @@ class Commands:
         Command('challenge', handle_challenge, additional_dispatcher_update=challenge_update_dispatcher, help=
                 f'/challenge $t - скинуть в чат кнопку "кто быстрее" на t ({TIME_TAGS_EXAMPLE}) времени, если вдруг надо что-то серьёзное быстро порешать'),
 
+        Command('joke', joke, help=f'/joke - расскажу анек чисто)\n'),
+
+        Command('troll_mode', troll_mode, help=
+                f'/troll_mode on/off - тролльмод'),
+
         Command('vanish_mode', vanish_mode,
-                help=f'/vanish_mode $t - удалять все сообщения в чате через t ({TIME_TAGS_EXAMPLE})'),
+                help=f'/vanish_mode $t/off - удалять все сообщения в чате через t ({TIME_TAGS_EXAMPLE})'),
 
         Command('help', show_help)
     ]

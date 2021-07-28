@@ -169,6 +169,14 @@ class PhraseManager:
         'Лол ты не с тем ботом решил обсудить эту хуйню браток))'
     ])
 
+    @classmethod
+    def i_will_tell(cls) -> str:
+        return random.choice([
+            'Лаадно, сейчас вспомню что-нибудь...',
+            'Короче, вот',
+            'Слушай, что ж)'
+        ])
+
     REPLY_TO_OFFENSE = [
         'Вообще довольно обидно. Ладно, чел, я тебя понял.',
         '>tfw ты такой лошок, что отыгрываешься на боте))',
@@ -215,3 +223,7 @@ class PhraseManager:
     @classmethod
     def praise_winners(cls) -> str:
         return random.choice(cls.PRAISE_WINNERS)
+
+    PLEASE_WORDS = [
+        'плиз', 'плз', 'пож', 'плез', 'пожалуйста', 'по-братски', 'умоляю'
+    ]

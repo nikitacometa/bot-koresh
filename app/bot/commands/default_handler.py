@@ -7,6 +7,7 @@ from telegram import Update, Message, User
 from telegram.ext import CallbackContext
 
 from app.bot.commands.admin_mode import try_process_admin_command
+from app.bot.commands.aneks import get_anek
 from app.bot.commands.create_challenge import create_challenge
 from app.bot.commands.show_map import extract_coordinates
 from app.bot.commands.track_address import track_address
@@ -270,6 +271,11 @@ def default_message_handler(update: Update, context: CallbackContext):
             return
     except Exception as e:
         logging.exception(e)
+
+    if have_starts(low_tokens, 'анек', 'истори', 'расскаж') and have_start_in_list(low_tokens, PhraseManager.PLEASE_WORDS):
+        story = f'{get_anek()}'
+        send_message(context, update, story)
+        return
 
     if not low_tokens:
         # message was only my name
