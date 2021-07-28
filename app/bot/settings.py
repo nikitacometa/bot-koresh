@@ -9,7 +9,7 @@ from typing import Optional
 # TODO: refactor to have all the settings in a separate file
 VERSION = '1.4.2'
 
-BOT_API_TOKEN = os.environ['BOT_API_TOKEN']
+BOT_API_TOKEN = os.environ.get('BOT_API_TOKEN')
 TRANSLATOR_API_KEY = os.environ.get('TRANSLATOR_API_KEY')
 
 PROXY_URL = 'socks5h://localhost:9050'
@@ -21,8 +21,8 @@ UPDATER_ARGS = {
     'proxy_url': PROXY_URL
 }
 
-BOT_CHAT_ID = int(os.environ['BOT_CHAT_ID'])
-ADMIN_CHAT_ID = int(os.environ['ADMIN_CHAT_ID'])
+BOT_CHAT_ID = int(os.environ.get('BOT_CHAT_ID'))
+ADMIN_CHAT_ID = int(os.environ.get('ADMIN_CHAT_ID'))
 
 # TODO: handle it's not set
 BACKUP_MESSAGE_ID: Optional[int] = os.environ.get('BACKUP_MESSAGE_ID', None)

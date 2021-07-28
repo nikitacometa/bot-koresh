@@ -1,5 +1,6 @@
 import atexit
 import logging
+import re
 from time import sleep
 
 import requests
@@ -7,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from telegram.ext import MessageHandler, Filters
 
+from app.bot.commands.aneks import fix_emojis
 from app.bot.commands.commands import Commands
 from app.bot.commands.default_handler import default_message_handler
 from app.bot.context import app_context
@@ -25,6 +27,7 @@ def get_aneks():
         try:
             print(f'GET {base_url}{i}')
             response = requests.get(f'{base_url}{i}')
+            emoji_reg = r'^<img alt="🚂." class="emoji" src="/emoji/e/.+"/>$'
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 divs = soup.find_all('div')
@@ -32,10 +35,12 @@ def get_aneks():
                 if len(aneks) == 0:
                     continue
                 anek = aneks[0].div
-                print(anek.contents)
-                anek_lines = anek.prettify().replace('<br/>\n', ' ').split('\n')[1:-2]
+                # print(anek.contents)
+                base = anek.prettify()
+                good = fix_emojis(base)
+                anek_lines = good.replace('<br/>\n', ' ').split('\n')[1:-2]
                 text = '\n'.join(anek_lines)
-                print(f'\n\n{text}\n\n')
+                # print(f'\n\n{text}\n\n')
                 f = open(f'aneks/anek{i}.txt', 'w+')
                 f.write(text)
                 f.close()
@@ -46,7 +51,6 @@ def get_aneks():
 
         except Exception as e:
             print(e)
-
 
 def run():
     updater = app_context.updater
