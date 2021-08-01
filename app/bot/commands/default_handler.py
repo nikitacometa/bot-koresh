@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 from typing import List
 
@@ -167,12 +167,12 @@ def default_message_handler(update: Update, context: CallbackContext):
             send_message(context, update, 'Чёт не вышло(')
             return
 
-        delete_msg_after(update.message.chat.id, message.message_id, timer)
+        delete_msg_after(update.message.chat.id, message.message_id, timedelta(seconds=timer))
         reply_msg = send_message(context, update, 'Организуем-организуем)')
 
         bot_delay = min(7, timer)
         # delete my msg as well
-        delete_msg_after(reply_msg.chat.id, reply_msg.message_id, bot_delay)
+        delete_msg_after(reply_msg.chat.id, reply_msg.message_id, timedelta(seconds=bot_delay))
         return
 
     if is_vanishing(context):
