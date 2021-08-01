@@ -178,7 +178,9 @@ def default_message_handler(update: Update, context: CallbackContext):
     if is_vanishing(context):
         return
 
-    if message.photo:
+    # TODO: make an option
+    saving_photos = False
+    if saving_photos and message.photo:
         biggest = None
         for photo in message.photo:
             if biggest is None or photo.file_size > biggest.file_size:
