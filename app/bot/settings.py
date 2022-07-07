@@ -17,8 +17,9 @@ PROXIES = dict(
     http='socks5h://localhost:9050',
     https='socks5h://localhost:9050'
 )
+# TODO: make proxy enable in env ffs...
 UPDATER_ARGS = {
-    'proxy_url': PROXY_URL
+    # 'proxy_url': PROXY_URL
 }
 
 BOT_CHAT_ID = int(os.environ.get('BOT_CHAT_ID'))
