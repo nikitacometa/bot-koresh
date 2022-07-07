@@ -7,7 +7,7 @@ from telegram import Update, Message, User
 from telegram.ext import CallbackContext
 
 from app.bot.commands.admin_mode import try_process_admin_command
-from app.bot.commands.aneks import get_anek
+from app.bot.commands.joke import get_anek
 from app.bot.commands.create_challenge import create_challenge
 from app.bot.commands.show_map import extract_coordinates
 from app.bot.commands.track_address import track_address
@@ -278,6 +278,10 @@ def default_message_handler(update: Update, context: CallbackContext):
         # TODO: fix aneks
         # story = f'{get_anek()}'
         send_message(context, update, 'Братишка, вся твоя жизнь один сплошной анек...')
+        return
+
+    if have_starts(low_tokens, 'прив', 'даров', 'йо', 'алоха', 'вазап'):
+        send_message(context, update, PhraseManager.greet())
         return
 
     if not low_tokens:

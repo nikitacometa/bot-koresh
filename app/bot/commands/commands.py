@@ -4,7 +4,7 @@ from typing import ClassVar, List
 from telegram import ChatAction, Update
 from telegram.ext import CallbackContext
 
-from app.bot.commands.aneks import joke
+from app.bot.commands.joke import joke
 from app.bot.commands.show_map import show_map
 from app.bot.commands.abstract_command import Command
 from app.bot.commands.admin_mode import admin_mode
