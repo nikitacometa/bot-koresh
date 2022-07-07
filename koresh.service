@@ -6,8 +6,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=~/bot-koresh
-ExecStart=~/bot-koresh/scripts/start_bot.sh
+WorkingDirectory=/home/keybase/data2/bot-koresh
+ExecStart=/home/keybase/data2/bot-koresh/scripts/start_bot.sh
 Restart=on-failure
 
 [Install]
