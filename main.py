@@ -20,6 +20,9 @@ from app.bot.updater import run_info_updater_if_not
 
 
 def get_aneks():
+    # TODO: fix aneks
+    return # " lol"
+
     print('lets get some ankes')
     base_url = "https://vk.com/baneksbest?w=wall-85443458_"
     last_id = 32511
