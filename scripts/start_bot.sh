@@ -30,6 +30,6 @@ echo
 
 while true
 do
-   pipenv run python3 "main.py" | tee -a "$FULL_LOG"
+   python3 -m pipenv run python3 "main.py" | tee -a "$FULL_LOG"
    sleep 1
 done
