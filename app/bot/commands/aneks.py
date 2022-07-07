@@ -21,8 +21,10 @@ def get_anek() -> str:
 @moshnar_command
 @send_action(ChatAction.TYPING)
 def joke(update: Update, context: CallbackContext):
-    story = f'{get_anek()}'
-    send_message(context, update, story)
+    # story = f'{get_anek()}'
+    # TODO: implement aneks download
+    # send_message(context, update, story)
+    send_message(context, update, 'Твоя жизнь как анек, братишка')
 
 
 def fix_emojis(s: str) -> str:
