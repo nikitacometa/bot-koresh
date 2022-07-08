@@ -3,6 +3,7 @@ import logging
 
 from telegram.ext import MessageHandler, Filters
 
+from bot.commands.abstract_command import Command
 from bot.commands.commands import Commands
 from bot.commands.default_handler import default_message_handler
 from bot.context import app_context
@@ -17,7 +18,8 @@ def run():
     dp = updater.dispatcher
 
     for command in Commands.get_all():
-        command.update_dispatcher(dp)
+        if isinstance(command, Command):
+            command.update_dispatcher(dp)
 
     # fallback
     dp.add_handler(MessageHandler(Filters.all, default_message_handler))
