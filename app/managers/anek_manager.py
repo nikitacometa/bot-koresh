@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 from time import sleep
@@ -28,9 +29,9 @@ def fix_emojis(s: str) -> str:
 
 def get_anek() -> str:
     files = os.listdir(ANEK_DIR)
-    print(f'Total {len(files)} aneks')
+    logging.debug(f'Total {len(files)} aneks')
     if len(files) == 0:
-        return 'Твоя жизнь как анек, братишка'
+        return 'Братишка, вся твоя жизнь один сплошной анек...'
 
     anek_name = f'{ANEK_DIR}/{random.choice(files)}'
     with open(anek_name, 'r') as f:
@@ -42,7 +43,7 @@ def fetch_aneks():
     first_id = 1
     last_id = 1300
 
-    print(f'lets get some aneks from {base_url}')
+    logging.debug(f'lets get some aneks from {base_url}')
 
     for i in range(first_id, last_id + 1):
         try:
