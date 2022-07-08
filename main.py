@@ -10,7 +10,6 @@ from bot.context import app_context
 # TODO: make him inline to have an ability to use it in every conversation
 # TODO: separate class
 from bot.updater import run_info_updater_if_not
-from managers.anek_manager import fetch_aneks
 
 
 def run():
@@ -29,7 +28,8 @@ def run():
 
     logging.info('Bot started!\n\nWell... Hello (:\n')
 
-    fetch_aneks()
+    # TODO: to settings
+    # fetch_aneks()
 
     updater.idle()
 

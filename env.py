@@ -16,6 +16,7 @@ TRACKINGS_UPDATE_INTERVAL = timedelta(seconds=30)
 # TODO: make request argument
 CONFIRMATIONS_NEEDED = 1
 
+# TODO: configure per chat
 SLADKO_EVERY_N = 250
 
 MAX_USER_PHOTOS = 13
@@ -53,7 +54,6 @@ class Settings(BaseSettings):
 
     # Bot
     hi_mark_delay_h: int
-    sladko_every_n: int  # TODO: configure for every chat
 
     class Config:
         env_file = '.env'
