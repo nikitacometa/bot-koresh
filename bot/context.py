@@ -19,7 +19,7 @@ from managers.tracking_manager import TrackingManager
 class Context:
     blockchain_client: BlockchainClient = field(default_factory=BlockchainClient)
     translator_client: TranslatorClient = field(default_factory=TranslatorClient)
-    db_manager: DBManager = field(default_factory=DBManager)
+    db_manager: DBManager = field(default=DBManager(settings.mongodb_host, settings.mongodb_port))
 
     last_hi_mark_at: datetime = field(default=datetime.now() - settings.hi_mark_delay)
 

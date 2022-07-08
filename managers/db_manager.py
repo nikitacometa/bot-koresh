@@ -8,10 +8,12 @@ from pymongo.database import Database
 
 @dataclass
 class DBManager:
-    # TODO: set up the url in the config
+    host: str
+    port: int
+
     @cached_property
     def client(self) -> MongoClient:
-        return MongoClient(port=27017)
+        return MongoClient(host=self.host, port=self.port)
 
     @cached_property
     def db(self) -> Database:
