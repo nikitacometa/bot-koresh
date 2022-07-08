@@ -9,10 +9,10 @@ echo "FULL_LOG=$FULL_LOG"
 
 SCRIPTS="$(dirname $0)"
 
-"$SCRIPTS"/scripts/init_tor.sh || exit
+"$SCRIPTS"/init_tor.sh || exit
 echo
 
-#"$SCRIPTS"/scripts/start_mongodb.sh || exit
+#"$SCRIPTS"/start_mongodb.sh || exit
 #echo
 
 python3 -m pipenv run python main.py | tee -a "$FULL_LOG"
