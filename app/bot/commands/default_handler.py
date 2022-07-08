@@ -275,9 +275,7 @@ def default_message_handler(update: Update, context: CallbackContext):
         logging.exception(e)
 
     if have_starts(low_tokens, 'анек', 'истори', 'расскаж') and have_start_in_list(low_tokens, PhraseManager.PLEASE_WORDS):
-        # TODO: fix aneks
-        # story = f'{get_anek()}'
-        send_message(context, update, 'Братишка, вся твоя жизнь один сплошной анек...')
+        send_message(context, update, get_anek())
         return
 
     if have_starts(low_tokens, 'прив', 'даров', 'йо', 'алоха', 'вазап'):

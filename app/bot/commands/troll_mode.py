@@ -18,7 +18,7 @@ def is_troll(context: CallbackContext) -> bool:
 def troll_mode(update: Update, context: CallbackContext):
     if not context.args:
         if is_troll(context):
-            update.message.reply_text('Бля ну и че) Ты вообще вывозишь?)')
+            update.message.reply_text('Ну и что лол? Челик ты вообще тут??)')
         else:
             update.message.reply_text('Нужно ещё передать on/off)')
         return
@@ -37,7 +37,7 @@ def troll_mode(update: Update, context: CallbackContext):
 
 def troll_mode_on(update: Update, context: CallbackContext):
     if context.chat_data.get('troll_mode', False):
-        update.message.reply_text('Ты че диб)) Я и так траллирую всех пздц)')
+        update.message.reply_text('Не увидел мой троллинг? Потому что он в твоей жопе')
         return
 
     context.chat_data['troll_mode'] = True

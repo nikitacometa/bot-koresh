@@ -46,19 +46,17 @@ def fetch_aneks():
 
     for i in range(first_id, last_id + 1):
         try:
-            print(f'#{i} GET {base_url}{i}')
-            response = requests.get(f'{base_url}{i}')
+            filename = f'{ANEK_DIR}/{i}.txt'
+            if os.path.exists(filename):
+                continue
+
+            url = f'{base_url}{i}'
+            print(f'#{i} GET {url}')
+            response = requests.get(url)
 
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
-                # print(soup.prettify())
-                # print('\n\n\n\n')
-
                 metas = soup.find_all('meta')
-                # for meta in metas:
-                #     print('\n')
-                #     print(meta.get('name'))
-                #     print(meta)
 
                 aneks = [meta for meta in metas if meta.get('name') == 'description']
                 if len(aneks) == 0:
@@ -66,9 +64,7 @@ def fetch_aneks():
                     continue
 
                 anek = aneks[0].get('content')
-                print('anek')
                 print(anek)
-                # print('||||||')
 
                 # base = anek.prettify()
                 # good = fix_emojis(base)
@@ -76,7 +72,7 @@ def fetch_aneks():
                 # text = '\n'.join(anek_lines)
                 # print(f'{text}\n\n')
 
-                with open(f'{ANEK_DIR}/{i}.txt', 'w+') as f:
+                with open(filename, 'w+') as f:
                     f.write(anek)
 
                 # do not overload the net
