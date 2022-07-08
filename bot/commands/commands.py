@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, List
 
-from telegram import ChatAction, Update
+from telegram import ChatAction, Update, ParseMode
 from telegram.ext import CallbackContext
 
 from bot.commands.joke import joke
@@ -31,7 +31,7 @@ def show_help(update: Update, context: CallbackContext):
     msg += '\n'
     msg += Commands.help_string()
 
-    update.message.reply_text(msg)
+    update.message.reply_markdown(text=msg)
 
 
 @dataclass
@@ -40,39 +40,40 @@ class Commands:
         Command('start', start),
 
 
-        Separator('\n**Bitcoin движ**'),
+        Separator('*Bitcoin движ*'),
 
         # TODO: change to check + button for tracking
         Command('track', track_address_handler, help=
-                f'/track – понаблюдаю за адресом и сразу отпишу, как только на последней/новой транзакции '
+                f'/track $addr – понаблюдаю за адресом и сразу отпишу, как только на последней/новой транзакции '
                 f'наберётся нужное количество подтверждений (по дефолту 2)'),
 
         Command('show_tracked', show_tracked, help=
-                f'/show_tracked – показать все отслеживаемые адреса\n'),
+                f'/show_tracked – показать все отслеживаемые адреса'),
 
 
-        Separator('\n**Для тех, у кого есть друзья**'),
+        Separator('\n*Для тех, у кого есть друзья*'),
 
         Command('split_teams', split_into_teams, help=
                 f'/split_teams – поделить список людей на n команд (2 по дефолту)'),
 
         Command('challenge', handle_challenge, additional_dispatcher_update=challenge_update_dispatcher, help=
                 f'/challenge $t – скинуть в чат кнопку "кто быстрее нажмёт" на t ({TIME_TAGS_EXAMPLE}) времени, '
-                f'если вдруг надо набрать поскорее сколько-то людей'),
+                f'если вдруг надо набрать поскорее сколько-то людей (опционально добавляем текст)'),
 
 
-        Separator('\n**Для тебя (ведь ты любишь путешествия и поржать)**'),
+        Separator('\n*Для тебя (ведь ты любишь путешествия и поржать)*'),
 
         # TODO: don't write name in help (add it in Command init)
-        Command('show_map', show_map, help=f'/show_map – показать кусок карты по данным координатам'),
+        Command('show_map', show_map,
+                help=f'/show_map x,y – показать кусок карты по данным координатам'),
 
-        Command('joke', joke, help=f'/joke – расскажу один из анеков своего деда\n'),
+        Command('joke', joke, help=f'/joke – расскажу один из анеков своего деда'),
 
 
-        Separator('\n**Chat settings**'),
+        Separator('\n*Chat settings*'),
 
-        Command('troll_mode', troll_mode, help=
-                f'/troll_mode on/off – тролльмод'),
+        Command('troll_mode', troll_mode,
+                help=f'/troll_mode on/off – я конечно не GPT, но матом покрою от души'),
 
         Command('vanish_mode', vanish_mode,
                 help=f'/vanish_mode $t/off – удалять все сообщения в чате через t ({TIME_TAGS_EXAMPLE})'),
