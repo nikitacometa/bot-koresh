@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar, List
 
-from telegram import ChatAction, Update, ParseMode
+from telegram import ChatAction, Update
 from telegram.ext import CallbackContext
 
 from bot.commands.joke import joke
@@ -31,7 +31,7 @@ def show_help(update: Update, context: CallbackContext):
     msg += '\n'
     msg += Commands.help_string()
 
-    update.message.reply_markdown(text=msg)
+    update.message.reply_html(msg, disable_web_page_preview=True)
 
 
 @dataclass
@@ -40,7 +40,7 @@ class Commands:
         Command('start', start),
 
 
-        Separator('*Bitcoin движ*'),
+        Separator('<b>Bitcoin движ</b>'),
 
         # TODO: change to check + button for tracking
         Command('track', track_address_handler, help=
@@ -51,7 +51,7 @@ class Commands:
                 f'/show_tracked – показать все отслеживаемые адреса'),
 
 
-        Separator('\n*Для тех, у кого есть друзья*'),
+        Separator('\n<b>Для тех, у кого есть друзья</b>'),
 
         Command('split_teams', split_into_teams, help=
                 f'/split_teams – поделить список людей на n команд (2 по дефолту)'),
@@ -61,7 +61,7 @@ class Commands:
                 f'если вдруг надо набрать поскорее сколько-то людей (опционально добавляем текст)'),
 
 
-        Separator('\n*Для тебя (ведь ты любишь путешествия и поржать)*'),
+        Separator('\n<b>Для тебя (ведь ты любишь путешествия и поржать)</b>'),
 
         # TODO: don't write name in help (add it in Command init)
         Command('show_map', show_map,
@@ -70,7 +70,7 @@ class Commands:
         Command('joke', joke, help=f'/joke – расскажу один из анеков своего деда'),
 
 
-        Separator('\n*Chat settings*'),
+        Separator('\n<b>Chat settings</b>'),
 
         Command('troll_mode', troll_mode,
                 help=f'/troll_mode on/off – я конечно не GPT, но матом покрою от души'),
