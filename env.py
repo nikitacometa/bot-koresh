@@ -12,7 +12,7 @@ PROXY_URL = 'socks5h://localhost:9050'
 PROXIES = dict(http=PROXY_URL, https=PROXY_URL)
 
 # TODO: try more often
-TRACKINGS_UPDATE_INTERVAL = timedelta(seconds=60)
+TRACKINGS_UPDATE_INTERVAL = timedelta(seconds=30)
 # TODO: make request argument
 CONFIRMATIONS_NEEDED = 1
 
@@ -86,4 +86,8 @@ def setup_logging():
 
     logging.getLogger('telegram.ext.dispatcher').setLevel(LOGGING_LEVEL)
 
+
+settings = Settings()
+
 setup_logging()
+os.makedirs(settings.storage_dir, exist_ok=True)

@@ -5,7 +5,7 @@ from typing import Tuple, Optional, Dict, ClassVar
 
 import requests
 
-from bot.context import settings
+from env import settings
 from model.tracking import AddressStatus, TransactionInfo
 
 from bot.validator import is_valid_bitcoin_address

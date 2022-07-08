@@ -6,9 +6,10 @@ from typing import Optional
 import requests
 from telegram.ext import CallbackContext
 
-from bot.context import app_context, settings
+from bot.context import app_context
 
 # TODO: store in user object
+from env import settings
 from model.user import FileInfo
 from utils.message_utils import delete_msg_after, send_message_to_chat
 from utils.str_utils import parse_time

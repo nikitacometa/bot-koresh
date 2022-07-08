@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import requests
 
-from bot.context import settings
+from env import settings
 
 
 @dataclass

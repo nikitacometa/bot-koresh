@@ -1,4 +1,3 @@
-import os
 from dataclasses import dataclass, field
 from datetime import datetime
 from functools import cached_property
@@ -7,7 +6,7 @@ from typing import Optional
 from telegram import Bot
 from telegram.ext import Updater, Job
 
-from env import Settings, PROXY_URL
+from env import PROXY_URL, settings
 from external.blockchain_client import BlockchainClient
 from external.map_client import MapClient
 from external.translator_client import TranslatorClient
@@ -27,13 +26,9 @@ class Context:
     updater_job: Optional[Job] = field(default=None)
 
     @cached_property
-    def settings(self) -> Settings:
-        return Settings()
-
-    @cached_property
     def updater(self) -> Updater:
         updater_args = {}
-        if self.settings.proxy_bot_updates:
+        if settings.proxy_bot_updates:
             updater_args['proxy_url'] = PROXY_URL
         return Updater(settings.tg_api_token, use_context=True, request_kwargs=updater_args)
 
@@ -59,6 +54,3 @@ class Context:
 
 
 app_context = Context()
-settings = app_context.settings
-
-os.makedirs(settings.storage_dir, exist_ok=True)

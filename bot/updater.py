@@ -3,8 +3,8 @@ from typing import Optional, List
 
 from telegram.ext import CallbackContext, Job
 
-from bot.context import app_context, settings
-from env import TRACKING_TTL
+from bot.context import app_context
+from env import TRACKING_TTL, TRACKINGS_UPDATE_INTERVAL
 from managers.phrase_manager import PhraseManager
 from model.tracking import AddressStatus, TransactionInfo
 from utils.message_utils import send_tx_info
@@ -60,5 +60,5 @@ def update_trackings(context: CallbackContext):
 
 def run_info_updater_if_not() -> Optional[Job]:
     if app_context.updater_job is None:
-        app_context.updater_job = app_context.job_queue.run_repeating(callback=update_trackings, interval=settings)
+        app_context.updater_job = app_context.job_queue.run_repeating(callback=update_trackings, interval=TRACKINGS_UPDATE_INTERVAL)
     return app_context.updater_job

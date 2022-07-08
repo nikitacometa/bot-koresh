@@ -16,8 +16,9 @@ from bot.commands.delete_after import get_delete_after
 from bot.commands.save_photo import save_photo
 from bot.commands.split_teams import split_into_teams, is_splitting
 from bot.commands.vanish_mode import is_vanishing
-from bot.context import app_context, settings
+from bot.context import app_context
 from bot.validator import is_valid_bitcoin_address
+from env import settings
 from managers.phrase_manager import PhraseManager
 from utils.classes.moshnar_command import moshnar_command
 from utils.message_utils import send_sladko, delete_msg_after, send_message, vanish
