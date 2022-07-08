@@ -5,7 +5,7 @@ from typing import Tuple, Optional, Dict, ClassVar
 
 import requests
 
-from env import settings
+from env import settings, CONFIRMATIONS_NEEDED
 from model.tracking import AddressStatus, TransactionInfo
 
 from bot.validator import is_valid_bitcoin_address
@@ -72,7 +72,7 @@ class BlockchainClient:
         if tx_info.conf_cnt is None:
             return AddressStatus.CHECK_FAILED, None
 
-        if tx_info.conf_cnt >= settings.confirmations_needed:
+        if tx_info.conf_cnt >= CONFIRMATIONS_NEEDED:
             return AddressStatus.CONFIRMED, tx_info
         else:
             return AddressStatus.NOT_CONFIRMED, tx_info

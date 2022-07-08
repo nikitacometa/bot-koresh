@@ -31,7 +31,7 @@ def show_help(update: Update, context: CallbackContext):
     msg += '\n'
     msg += Commands.help_string()
     msg += '\n\n'
-    msg += 'Кстати, я люблю поболтать. Добавляй в конфы - наводи шуму.'
+    msg += 'Кстати, я люблю поболтать. Добавляй в конфы - наводи шуму. '
     msg += 'Но прошу не обижаться на мои базары, я просто делаю свою работу.'
 
     update.message.reply_html(msg, disable_web_page_preview=True)
