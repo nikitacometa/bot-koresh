@@ -4,27 +4,24 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-aiohttp = "==3.6.2"
+#aiohttp = "*"
 autoflake = "*"
-base58 = "==2.0.1"
-beautifulsoup4 = "4.11.1"
+base58 = "*"
+beautifulsoup4 = "*"
 dacite = "*"
 dataclasses-json = "*"
-pipenv = "==2020.6.2"
 pre-commit = "*"
-pymongo = "==3.10.1"
+pymongo = "*"
 pydantic = "*"
-python-telegram-bot = "==13.13"
-PySocks = "==1.7.1"
-requests = "==2.24.0"
-async-timeout = "==3.0.1"
-decorator = "==4.4.2"
-distlib = "==0.3.0"
-filelock = "==3.0.12"
-future = "==0.18.2"
-more-itertools = "==8.3.0"
-py = "==1.8.1"
-python-dotenv = "==0.20.0"
-
+python-telegram-bot = "*"
+PySocks = "*"
+requests = "*"
+#async-timeout = "*"
+decorator = "*"
+more-itertools = "*"
+python-dotenv = "*"
 
 [dev-packages]
+
+[requires]
+python_version = "3.8"
