@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-#aiohttp = "*"
 autoflake = "*"
 base58 = "*"
 beautifulsoup4 = "*"
@@ -16,7 +15,6 @@ pydantic = "*"
 python-telegram-bot = "*"
 PySocks = "*"
 requests = "*"
-#async-timeout = "*"
 decorator = "*"
 more-itertools = "*"
 python-dotenv = "*"
@@ -24,4 +22,4 @@ python-dotenv = "*"
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
