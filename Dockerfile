@@ -15,4 +15,5 @@ RUN apt update && \
 #RUN apt install tor
 
 RUN pip install pipenv
+RUN pipenv lock
 RUN pipenv install --dev --deploy
