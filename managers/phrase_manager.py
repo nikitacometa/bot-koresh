@@ -1,8 +1,6 @@
 import random
 from dataclasses import dataclass
 
-import psutil
-
 
 @dataclass
 class PhraseManager:
@@ -211,7 +209,7 @@ class PhraseManager:
 
     @classmethod
     def flex(self) -> str:
-        return f'Вот у меня {psutil.cpu_count()} ядер братан, а у тебя?))'
+        return f'Вот у меня 8 ядер братан, а у тебя?))'
 
     ANSWER_QUESTION = [
         'хз + похуй',
