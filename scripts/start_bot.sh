@@ -12,7 +12,4 @@ SCRIPTS="$(dirname $0)"
 "$SCRIPTS"/init_tor.sh || exit
 echo
 
-#"$SCRIPTS"/start_mongodb.sh || exit
-#echo
-
 python3 -m pipenv run python main.py | tee -a "$FULL_LOG"

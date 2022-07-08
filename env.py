@@ -28,6 +28,7 @@ LOGGING_LEVEL = logging.DEBUG
 TELEGRAM_API_LOGGING_LEVEL = logging.INFO
 
 LOGS_DIR = f'{os.getcwd()}/.logs'
+print(f'Logs are at {LOGS_DIR}')
 
 
 class Settings(BaseSettings):
@@ -52,9 +53,7 @@ class Settings(BaseSettings):
 
     # Bot
     hi_mark_delay_h: int
-
-    # TODO: configure for every chat
-    sladko_every_n: int
+    sladko_every_n: int  # TODO: configure for every chat
 
     class Config:
         env_file = '.env'
