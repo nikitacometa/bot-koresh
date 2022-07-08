@@ -22,7 +22,7 @@ echo "KORESH_HOME=$KORESH_HOME"
 FULL_LOG=".logs/total.log"
 echo "FULL_LOG=$FULL_LOG"
 
-#"$KORESH_HOME"/scripts/init_tor.sh || exit
+"$KORESH_HOME"/scripts/init_tor.sh || exit
 echo
 
 #"$KORESH_HOME"/scripts/start_mongodb.sh || exit

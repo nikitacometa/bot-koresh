@@ -3,15 +3,14 @@ import logging
 
 from telegram.ext import MessageHandler, Filters
 
-from app.bot.commands.commands import Commands
-from app.bot.commands.default_handler import default_message_handler
-from app.bot.context import app_context
+from bot.commands.commands import Commands
+from bot.commands.default_handler import default_message_handler
+from bot.context import app_context
 
 # TODO: make him inline to have an ability to use it in every conversation
 # TODO: separate class
-from app.bot.settings import PROXIES
-from app.bot.updater import run_info_updater_if_not
-from app.managers.anek_manager import fetch_aneks
+from bot.updater import run_info_updater_if_not
+from managers.anek_manager import fetch_aneks
 
 
 def run():

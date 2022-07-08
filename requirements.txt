@@ -37,3 +37,5 @@ yarl==1.4.2
 
 telegram~=0.0.1
 dacite~=1.6.0
+pydantic~=1.9.0
+beautifulsoup4~=4.11.1
