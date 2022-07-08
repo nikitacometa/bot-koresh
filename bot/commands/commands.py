@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from typing import ClassVar, List
 
-from bot.commands.help import show_help
+from telegram import ChatAction, Update
+from telegram.ext import CallbackContext
+
 from bot.commands.joke import joke
 from bot.commands.show_map import show_map
 from bot.commands.abstract_command import Command, HelpLine, Separator
@@ -14,6 +16,22 @@ from bot.commands.split_teams import split_into_teams
 from bot.commands.start import start
 from bot.commands.track_address import track_address_handler
 from bot.commands.troll_mode import troll_mode
+from managers.phrase_manager import PhraseManager
+from utils.classes.moshnar_command import moshnar_command
+from utils.classes.sending_action import send_action
+
+
+@send_action(ChatAction.TYPING)
+@moshnar_command
+def show_help(update: Update, context: CallbackContext):
+    msg = f'{PhraseManager.how_are_you(update.message.from_user.first_name)}\n'
+    msg += '\n'
+    msg += 'Поздравляю, наконец в твоей жизни появился смысл!'
+    msg += 'Теперь ты можешь бесцельно развлекать себя и своих кожаных собратьев разными странными способами:\n'
+    msg += '\n'
+    msg += Commands.help_string()
+
+    update.message.reply_text(msg)
 
 
 @dataclass
