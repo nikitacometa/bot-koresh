@@ -177,7 +177,7 @@ def default_message_handler(update: Update, context: CallbackContext):
         delete_msg_after(update.message.chat.id, message.message_id, timedelta(seconds=timer))
         reply_msg = send_message(context, update, PhraseManager.remove_msg())
 
-        bot_delay = min(7, timer)
+        bot_delay = min(2, timer)
         # delete my msg as well
         delete_msg_after(reply_msg.chat.id, reply_msg.message_id, timedelta(seconds=bot_delay))
         return
