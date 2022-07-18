@@ -157,9 +157,9 @@ def default_message_handler(update: Update, context: CallbackContext):
             if is_valid_bitcoin_address(alpha_part):
                 try:
                     track_address(alpha_part, message, context.bot)
+                    return
                 except Exception as e:
                     logging.exception(e)
-            return
         except Exception as e:
             logging.exception(e)
 
@@ -175,7 +175,7 @@ def default_message_handler(update: Update, context: CallbackContext):
             return
 
         delete_msg_after(update.message.chat.id, message.message_id, timedelta(seconds=timer))
-        reply_msg = send_message(context, update, 'Организуем-организуем)')
+        reply_msg = send_message(context, update, PhraseManager.remove_msg())
 
         bot_delay = min(7, timer)
         # delete my msg as well
