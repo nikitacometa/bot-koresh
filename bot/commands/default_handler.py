@@ -118,16 +118,20 @@ def default_message_handler(update: Update, context: CallbackContext):
     text: str = message.text
     tokens = text.split() if text is not None else []
     low_tokens = text.lower().split() if text is not None else []
+    print(low_tokens)
 
     if handle_sladko(message, context):
+        print('sladko')
         return
 
     if is_splitting(text):
+        print('splitting')
         context.chat_data['not_a_command'] = True
         split_into_teams(update, context)
         return
 
     if sender.username == 'Luckmannn':
+        print('luckman')
         # TODO: store this info in DB
         # TODO: set this feature via command
         now = datetime.now()
@@ -136,6 +140,7 @@ def default_message_handler(update: Update, context: CallbackContext):
             app_context.last_hi_mark_at = now
 
     try:
+        print('coords')
         coords = extract_coordinates(tokens)
         if coords:
             img_link = app_context.map_client.get_img_link_by_coordinates(coords)
@@ -146,6 +151,7 @@ def default_message_handler(update: Update, context: CallbackContext):
 
     # TODO: reformat for easy creating of new situations/cases
     for s in tokens:
+        print('bitcoin')
         try:
             alpha_part = get_alpha_part(s)
             if is_valid_bitcoin_address(alpha_part):
@@ -158,6 +164,7 @@ def default_message_handler(update: Update, context: CallbackContext):
             pass
 
     delete_after_time = get_delete_after(low_tokens)
+    print(delete_after_time)
     if delete_after_time is not None:
         logging.debug(f'default_handler = {delete_after_time}')
 
