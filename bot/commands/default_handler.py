@@ -160,9 +160,10 @@ def default_message_handler(update: Update, context: CallbackContext):
                 except Exception as e:
                     logging.exception(e)
             return
-        except Exception:
-            pass
+        except Exception as e:
+            logging.exception(e)
 
+    print('before')
     delete_after_time = get_delete_after(low_tokens)
     print(delete_after_time)
     if delete_after_time is not None:
