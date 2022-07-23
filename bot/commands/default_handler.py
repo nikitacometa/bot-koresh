@@ -124,14 +124,16 @@ def default_message_handler(update: Update, context: CallbackContext):
     dice = message.dice
     if dice is not None:
         value = dice.value
-        emoji = dice.emoji
-        message.reply_text(f'Wow! {value}!')
-        # reply = message.reply_text(f'{emoji}')
-        # print(reply)
-        # my_dice = reply.dice
-        # my_value = my_dice.value
-        my_value = random.randint(1, 7)
-        message.reply_text(f'А у меня {value}. {PhraseManager.dice_trust()}')
+        # emoji = dice.emoji
+        # prefix = 'Лол, ' if value < 4 else 'Так-то, '
+        # message.reply_text(f'{prefix}{value}!')
+        reply = message.reply_dice()
+        print(reply)
+        my_dice = reply.dice
+        my_value = my_dice.value
+        # my_value = random.randint(1, 7)
+        # message.reply_text(f'А у меня {value}, чо {PhraseManager.dice_trust()}')
+        # message.reply_text(f'А у меня {my_value}, чо.')
 
         if my_value < value:
             message.reply_text(PhraseManager.loose_dice())
