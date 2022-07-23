@@ -120,6 +120,14 @@ def default_message_handler(update: Update, context: CallbackContext):
     low_tokens = text.lower().split() if text is not None else []
     print(low_tokens)
 
+    dice = update['dice']
+    if dice is not None:
+        value = dice['value']
+        emoji = dice['emoji']
+        message.reply_text(f'Wow! {value}')
+        message.reply_text(f'{emoji}')
+        return
+
     if handle_sladko(message, context):
         print('sladko')
         return
