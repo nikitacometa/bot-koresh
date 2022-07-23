@@ -1,4 +1,5 @@
 import logging
+import random
 from datetime import datetime, timedelta
 from time import sleep
 from typing import List
@@ -125,10 +126,13 @@ def default_message_handler(update: Update, context: CallbackContext):
         value = dice.value
         emoji = dice.emoji
         message.reply_text(f'Wow! {value}!')
-        reply = message.reply_text(f'{emoji}')
-        print(reply)
-        my_dice = reply.dice
-        my_value = my_dice.value
+        # reply = message.reply_text(f'{emoji}')
+        # print(reply)
+        # my_dice = reply.dice
+        # my_value = my_dice.value
+        my_value = random.randint(1, 7)
+        message.reply_text(f'А у меня {value}. {PhraseManager.dice_trust()}')
+
         if my_value < value:
             message.reply_text(PhraseManager.loose_dice())
         elif my_value == value:
