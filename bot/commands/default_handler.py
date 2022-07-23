@@ -126,6 +126,7 @@ def default_message_handler(update: Update, context: CallbackContext):
         emoji = dice.emoji
         message.reply_text(f'Wow! {value}!')
         reply = message.reply_text(f'{emoji}')
+        print(reply)
         my_dice = reply.dice
         my_value = my_dice.value
         if my_value < value:
