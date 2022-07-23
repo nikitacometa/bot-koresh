@@ -120,12 +120,21 @@ def default_message_handler(update: Update, context: CallbackContext):
     low_tokens = text.lower().split() if text is not None else []
     print(low_tokens)
 
-    dice = update['dice']
+    dice = message.dice
     if dice is not None:
-        value = dice['value']
-        emoji = dice['emoji']
-        message.reply_text(f'Wow! {value}')
-        message.reply_text(f'{emoji}')
+        value = dice.value
+        emoji = dice.emoji
+        message.reply_text(f'Wow! {value}!')
+        reply = message.reply_text(f'{emoji}')
+        my_dice = reply.dice
+        my_value = my_dice.value
+        if my_value < value:
+            message.reply_text(PhraseManager.loose_dice())
+        elif my_value == value:
+            message.reply_text(PhraseManager.dice_draw())
+        else:
+            message.reply_text(PhraseManager.dice_win())
+
         return
 
     if handle_sladko(message, context):
