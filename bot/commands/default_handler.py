@@ -272,7 +272,7 @@ def default_message_handler(update: Update, context: CallbackContext):
             message.reply_text('Ну а ты хуила)')
             return
 
-        if have_inside(low_tokens, 'ахах', 'aзаз', 'азах', 'ахаз', 'aхх', 'азх'):
+        if have_inside(low_tokens, 'ахах', 'aзаз', 'ахаз', 'aхх'):
             message.reply_text(PhraseManager.laugh_reaction())
             return
 
@@ -360,12 +360,24 @@ def default_message_handler(update: Update, context: CallbackContext):
         message.reply_text('Ну и иди нахуй тогда че)')
         return
 
+    if have_starts(low_tokens, 'ебал') and have_starts(low_tokens, 'выеб'):
+        message.reply_text(PhraseManager.ebal_response())
+        return
+
+    if low_tokens[-1] == 'kek':
+        message.reply_text('Тебя выебал узбек')
+        return
+
     if have_starts(low_tokens, 'нов') and have_starts(low_tokens, 'функц'):
         message.reply_text('Да я ебашу пиздец))')
         return
 
     if have_starts(low_tokens, 'бедняга'):
         message.reply_text('Да лан, мне норм🤨🤨')
+        return
+
+    if have_starts(low_tokens, 'путин'):
+        message.reply_text('Путин чмо')
         return
 
     if are_in_a_row(low_tokens, ['плиз', 'удали']):
@@ -392,8 +404,16 @@ def default_message_handler(update: Update, context: CallbackContext):
         message.reply_text('Пиздатенько че)')
         return
 
+    if have_starts(low_tokens, 'заебал'):
+        message.reply_text('Лол, а ты не думал, что это ты всех заебал?')
+        return
+
     if have_starts(low_tokens, 'трол'):
         message.reply_text('Ну я типа пиздец тралебас ((:')
+        return
+
+    if have_starts(low_tokens, 'чел'):
+        message.reply_text('Я тебе не чел, челик...')
         return
 
     if have_starts(low_tokens, 'кнопк'):
@@ -411,6 +431,10 @@ def default_message_handler(update: Update, context: CallbackContext):
         message.reply_text('Да, братан, ты прав...')
         sleep(5)
         send_sladko(context.bot, message.chat.id)
+        return
+
+    if are_in_a_row(low_tokens, ['не', 'понял']):
+        message.reply_text('Канеш ты не понял, ты ж тупой кожаный мешок лол')
         return
 
     if are_in_a_row(low_tokens, ['как', 'дел']):
